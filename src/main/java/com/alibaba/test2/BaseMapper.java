@@ -1,9 +1,6 @@
 package com.alibaba.test2;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BaseMapper<T> {
@@ -32,15 +29,15 @@ public class BaseMapper<T> {
             return data;
         }
         filter(example.getWheres());
-        group(example.getGroupBys());
-        order(example.getOrderBys());
+        order(example.getOrderBy());
         limit(example.getLimit());
+        group(example.getGroupBys());
         return data;
     }
 
     /**
      * 根据条件过滤
-     *
+     * todo in、like等
      * @param wheres
      */
     public void filter(List<Where> wheres) {
@@ -81,9 +78,14 @@ public class BaseMapper<T> {
         if (null == groupBys || groupBys.size() == 0) {
             return;
         }
-        Map<T, List<T>> listMap = data.stream()
+        Map<String, List<T>> listMap = data.stream()
                 .collect(Collectors.groupingBy(t -> {
-                    return t;
+                    StringBuffer groupKey = new StringBuffer();
+                    for (String groupBy : groupBys) {
+                        Object val = ReflectUtil.getAttributeValue(t, groupBy);
+                        groupKey.append(String.valueOf(val));
+                    }
+                    return groupKey.toString();
                 }));
         List<T> groupData = new ArrayList<>();
         listMap.values()
@@ -95,13 +97,23 @@ public class BaseMapper<T> {
     /**
      * 排序
      *
-     * @param orderBys
+     * @param orderBy
      */
-    public void order(List<OrderBy> orderBys) {
-        if (null == orderBys || orderBys.size() == 0) {
+    public void order(OrderBy orderBy) {
+        if (null == orderBy) {
             return;
         }
-
+        List<T> orderResult = data.stream()
+                .sorted((a, b) -> {
+                    Object valueA = ReflectUtil.getAttributeValue(a, orderBy.getProperty());
+                    Object valueB = ReflectUtil.getAttributeValue(b, orderBy.getProperty());
+                    int result = String.valueOf(valueA).compareTo(String.valueOf(valueB));
+                    if (orderBy.isAsc()) {
+                        return result;
+                    }
+                    return Math.negateExact(result);
+                }).collect(Collectors.toList());
+        data = orderResult;
         return;
     }
 

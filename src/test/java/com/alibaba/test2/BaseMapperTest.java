@@ -6,15 +6,15 @@ import java.util.List;
 public class BaseMapperTest {
 
     public static void main(String[] args) {
-        //筛选城市=四川或者广东，根据等级分组，按照年龄升序，过滤前2条取5条数据
+        //筛选城市=四川或者广东，按照年龄升序，过滤前2条取10条数据，根据等级分组
         List<CustomerInfo> data = initData();
         BaseMapper<CustomerInfo> baseMapper = new BaseMapper<>(data);
         Example example = new Example();
         example.addWhere(new Where("city", ConditionEnum.AND, "四川"))
                 .addWhere(new Where("city", ConditionEnum.OR, "广东"))
                 .addGroupBy("level")
-                .addOrderBy(new OrderBy("age", true))
-                .setLimit(new Limit(2, 5));
+                .setOrderBy(new OrderBy("age", true))
+                .setLimit(new Limit(2, 10));
         List<CustomerInfo> result = baseMapper.query(example);
         for (CustomerInfo customerInfo : result) {
             System.out.println(customerInfo.toString());

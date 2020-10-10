@@ -23,7 +23,7 @@ public class Example {
     /**
      * 排序集合
      */
-    private List<OrderBy> orderBys = new ArrayList<>();
+    private OrderBy orderBy;
 
     public List<Where> getWheres() {
         return wheres;
@@ -42,8 +42,8 @@ public class Example {
         return this;
     }
 
-    public List<OrderBy> getOrderBys() {
-        return orderBys;
+    public OrderBy getOrderBy() {
+        return orderBy;
     }
 
     public Example addWhere(Where where) {
@@ -56,8 +56,8 @@ public class Example {
         return this;
     }
 
-    public Example addOrderBy(OrderBy orderBy) {
-        orderBys.add(orderBy);
+    public Example setOrderBy(OrderBy orderBy) {
+        this.orderBy = orderBy;
         return this;
     }
 }
