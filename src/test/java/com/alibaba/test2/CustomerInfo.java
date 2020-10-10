@@ -65,6 +65,6 @@ public class CustomerInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "姓名：" + name + "年龄：" + age + "城市：" + city + "等级：" + level;
+        return "姓名：" + name + "   年龄：" + age + "  城市：" + city + "   等级：" + level;
     }
 }
