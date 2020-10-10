@@ -14,6 +14,11 @@ public class OrderBy implements Serializable {
      */
     private boolean asc = true;
 
+    public OrderBy(String property, boolean asc) {
+        this.property = property;
+        this.asc = asc;
+    }
+
     public String getProperty() {
         return property;
     }

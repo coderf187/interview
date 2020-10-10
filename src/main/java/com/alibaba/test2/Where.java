@@ -19,6 +19,12 @@ public class Where implements Serializable {
      */
     private Object value;
 
+    public Where(String property, ConditionEnum condition, Object value) {
+        this.property = property;
+        this.condition = condition;
+        this.value = value;
+    }
+
     public ConditionEnum getCondition() {
         return condition;
     }

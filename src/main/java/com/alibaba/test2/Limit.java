@@ -14,6 +14,11 @@ public class Limit implements Serializable {
      */
     private int offset;
 
+    public Limit(int rows, int offset) {
+        this.rows = rows;
+        this.offset = offset;
+    }
+
     public int getRows() {
         return rows;
     }
